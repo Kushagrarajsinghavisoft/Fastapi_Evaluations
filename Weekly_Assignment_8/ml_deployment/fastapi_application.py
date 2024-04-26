@@ -65,5 +65,5 @@ db_name="Customer__personality_prediction_db"
 # connect(db=db_name, host=f'mongodb://{host}:{port}')
 connect(db=db_name, host=f'mongodb://{mongo_config.mongo_host}:{port}')
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="127.0.0.1", port=8000)
