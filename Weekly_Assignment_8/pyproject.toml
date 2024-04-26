@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ml_deployment"
+version = "0.1.0"
+description = ""
+authors = ["Kushagrarajsinghavisoft <kushagra.singh@avisoft.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.2"
+mongoengine = "^0.28.2"
+uvicorn = "^0.29.0"
+pydantic = "^2.7.1"
+pydantic-settings = "^2.2.1"
+scikit-learn = "^1.4.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
