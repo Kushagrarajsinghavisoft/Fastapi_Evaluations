@@ -18,4 +18,4 @@ build/
 # Editor and IDE specific files
 .vscode/
 .idea/
-.env
+.env/
