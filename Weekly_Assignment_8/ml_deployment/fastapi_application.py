@@ -3,10 +3,10 @@ from fastapi import FastAPI
 
 from mongoengine import connect
 
-from ml_deployment.models.pydantic_models import InputFeatures
-from ml_deployment.models.mongo_data import InputFeaturesDocument
 from ml_deployment.utils.v1.file_loader import model, scaler
+from ml_deployment.models.pydantic_models import InputFeatures
 from ml_deployment.config.v1.database_config import mongo_config
+from ml_deployment.models.mongo_data import InputFeaturesDocument
 from ml_deployment.utils.v1.preprocessing_features import helper_scale_input_features
 
 # Define FastAPI app
@@ -51,8 +51,12 @@ async def predict(features: InputFeatures):
 
     return {'prediction': prediction}
 
-# Define MongoDB connection settings
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
+
+# Define MongoDB connection settings
 port=27017
 host="localhost"
 db_name="Customer__personality_prediction_db"
