@@ -1,6 +1,4 @@
-import uvicorn
 from fastapi import FastAPI
-
 from mongoengine import connect
 
 from ml_deployment.utils.v1.file_loader import model, scaler
@@ -17,11 +15,11 @@ app = FastAPI()
 async def predict(features: InputFeatures):
     # Convert input features to numpy array
     scaled_inputs = helper_scale_input_features([
-        features.Income, features.MntWines, features.MntFruits,
-        features.MntMeatProducts, features.NumCatalogPurchases, features.AcceptedCmp3,
-        features.AcceptedCmp4, features.AcceptedCmp5, features.AcceptedCmp1,
-        features.AcceptedCmp2
+        features.Income, features.Recency, features.MntWines, features.MntFruits, features.MntMeatProducts,
+        features.MntGoldProds, features.NumWebPurchases, features.NumCatalogPurchases, features.AcceptedCmp3,
+        features.AcceptedCmp4, features.AcceptedCmp5, features.AcceptedCmp1, features.AcceptedCmp2
     ], scaler)
+    
     
     # Make predictions using the trained model
     prediction = model.predict(scaled_inputs)
@@ -35,17 +33,21 @@ async def predict(features: InputFeatures):
 
     # Save input features to MongoDB
     input_features_document = InputFeaturesDocument(
-        Income=features.Income,
-        MntWines=features.MntWines,
-        MntFruits=features.MntFruits,
-        MntMeatProducts=features.MntMeatProducts,
-        NumCatalogPurchases=features.NumCatalogPurchases,
-        AcceptedCmp3=features.AcceptedCmp3,
-        AcceptedCmp4=features.AcceptedCmp4,
-        AcceptedCmp5=features.AcceptedCmp5,
-        AcceptedCmp1=features.AcceptedCmp1,
-        AcceptedCmp2=features.AcceptedCmp2,
+        Income= features.Income,
+        Recency= features.Recency,
+        MntWines= features.MntWines,
+        MntFruits= features.MntFruits,
+        MntMeatProducts= features.MntMeatProducts,
+        MntGoldProds= features.MntGoldProds,
+        NumWebPurchases= features.NumWebPurchases,
+        NumCatalogPurchases= features.NumCatalogPurchases,
+        AcceptedCmp3= features.AcceptedCmp3,
+        AcceptedCmp4= features.AcceptedCmp4,
+        AcceptedCmp5= features.AcceptedCmp5,
+        AcceptedCmp1= features.AcceptedCmp1,
+        AcceptedCmp2= features.AcceptedCmp2,
         prediction = prediction
+        
     )
     input_features_document.save()
 
@@ -59,11 +61,8 @@ async def health():
 # Define MongoDB connection settings
 port=27017
 host="localhost"
-db_name="Customer__personality_prediction_db"
+db_name="Customer_personality_prediction_db"
 
 # Connect to MongoDB
 # connect(db=db_name, host=f'mongodb://{host}:{port}')
 connect(db=db_name, host=f'mongodb://{mongo_config.mongo_host}:{port}')
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="127.0.0.1", port=8000)
